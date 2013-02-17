@@ -1,0 +1,4 @@
+There are a bunch of MBean that are related to the Java VM that provide information about JIT compilation, class loading, memory usage, etc.  We want to make sure that we can extract and load them.
+
+!contents -R2 -g -p -f -h
+
