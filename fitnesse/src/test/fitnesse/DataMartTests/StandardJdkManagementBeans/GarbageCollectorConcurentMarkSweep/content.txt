@@ -1,0 +1,38 @@
+!contents -R2 -g -p -f -h
+
+This test makes sure that we can load and extract the com.sun.management.GarbageCollectorMXBean for the Concurrent Mark Sweep garbage collector.  It is a rather complex MBean and makes use of Maps and the java.lang.management.MemoryUsage (http://docs.oracle.com/javase/6/docs/api/java/lang/management/MemoryUsage.html) object.
+
+| org.jmxdatamart.fixtures.ExtractAndLoadTest |
+
+!| configure extractor |
+| extract statistics every | 500 | milliseconds |
+| write statistics to directory | GarbageCollectorConcurentMarkSweep/statistics |
+
+Note that the below makes use of the "path" notation for find the value to extract from a path of object references
+
+!| configure MBeans to be extracted |
+| bean name | bean alias | attribute | attribute alias |
+| java.lang:type=GarbageCollector,name=ConcurrentMarkSweep | ConcurrentMarkSweepGC | LastGcInfo.GcThreadCount | LastGcThreadCount |
+| java.lang:type=GarbageCollector,name=ConcurrentMarkSweep | ConcurrentMarkSweepGC | LastGcInfo.duration | LastGcDuration |
+| java.lang:type=GarbageCollector,name=ConcurrentMarkSweep | ConcurrentMarkSweepGC | LastGcInfo.memoryUsageAfterGc.CMS Old Gen.committed | CommittedMemUsageAfterOldGenGC |
+| java.lang:type=GarbageCollector,name=ConcurrentMarkSweep | ConcurrentMarkSweepGC | LastGcInfo.memoryUsageAfterGc.CMS Old Gen.max | MaxMemUsageAfterOldGenGC |
+| java.lang:type=GarbageCollector,name=ConcurrentMarkSweep | ConcurrentMarkSweepGC | LastGcInfo.memoryUsageAfterGc.CMS Old Gen.used | UsedMemUsageAfterOldGenGC |
+| java.lang:type=GarbageCollector,name=ConcurrentMarkSweep | ConcurrentMarkSweepGC | CollectionCount | |
+| java.lang:type=GarbageCollector,name=ConcurrentMarkSweep | ConcurrentMarkSweepGC | CollectionTime | |
+
+
+Then we give the collector some time to do its thing
+
+| collect statistics for | 2 | seconds |
+
+Then we load the statistics file into the data mart
+
+!| load statistics |
+| from file | GarbageCollectorConcurentMarkSweep/statistics.dat |
+| into database with url | ${derby.url};user=${derby.username};password=${derby.username} |
+
+Finally, we verify that the statistics were loaded as expected
+
+Connect to the JMX Data Mart database
+
+!|Connect|${derby.url};user=${derby.username};password=${derby.username}|
