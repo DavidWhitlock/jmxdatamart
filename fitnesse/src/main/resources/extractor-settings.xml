@@ -34,7 +34,6 @@
       <alias>TestWebAppMBean</alias>
       <AttributeList class="singleton-list">
         <Attribute>
-          <dataType>INT</dataType>
           <name>Age</name>
           <alias>age</alias>
         </Attribute>

@@ -12,19 +12,15 @@ based on David's example
       <alias>ClassLoading</alias>
       <AttributeList>
         <Attribute>
-          <dataType>BOOLEAN</dataType>
           <name>Verbose</name>
         </Attribute>
         <Attribute>
-          <dataType>INT</dataType>
           <name>LoadedClassCount</name>
         </Attribute>
         <Attribute>
-          <dataType>LONG</dataType>
           <name>UnloadedClassCount</name>
         </Attribute>
         <Attribute>
-          <dataType>LONG</dataType>
           <name>TotalLoadedClassCount</name>
         </Attribute>
       </AttributeList>
